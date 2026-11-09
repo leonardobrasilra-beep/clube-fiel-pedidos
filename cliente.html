@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clube Fiel — Pedido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
+<style>
+  :root{
+    --bg:#0F2A24; --card:#133229; --card-on:#1A3D33; --chip:#1C4237; --line:#2D4D44; --line-2:#3A5C52;
+    --txt:#F6F1E7; --txt-2:#D5E0DB; --txt-3:#B7C8C1; --txt-4:#8FA59D;
+    --accent:#E7B75A; --bad:#FF8A7A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);font-family:'Manrope',system-ui,Segoe UI,sans-serif}
+  button,input{font-family:inherit}
+  button{cursor:pointer}
+  .app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+  header{display:flex;align-items:center;gap:12px;padding:28px 20px 0}
+  .logo{width:42px;height:42px;border-radius:13px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#A9BDB5;display:block}
+  .brand{font-size:18px;font-weight:800}
+
+  main{flex:1;padding:26px 20px 20px;display:flex;flex-direction:column;gap:22px}
+  .tag{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{margin:8px 0 10px;font-size:32px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
+  .lead{margin:0;font-size:16px;line-height:1.5;font-weight:500;color:var(--txt-3)}
+
+  .list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+  .combo{display:flex;align-items:center;gap:8px;border-radius:16px;padding:6px 10px 6px 6px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);transition:background .15s}
+  .combo.on{background:var(--card-on);box-shadow:inset 0 0 0 2px var(--accent)}
+  .pick{flex:1;min-width:0;min-height:60px;display:flex;align-items:center;gap:12px;padding:0 8px;border:0;background:transparent;text-align:left;color:var(--txt)}
+  .box{width:28px;height:28px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px #5A7B71}
+  .on .box{background:var(--accent);box-shadow:none}
+  .box svg{display:none}
+  .on .box svg{display:block}
+  .nm{display:block;font-size:16px;font-weight:700}
+  .pr{display:block;font-size:14px;font-weight:700;color:var(--accent);margin-top:2px}
+  .pr s{font-weight:500;color:var(--txt-4);margin-left:4px}
+  .stepper{display:none;align-items:center;gap:2px;flex:none}
+  .on .stepper{display:flex}
+  .stepper button{width:44px;height:48px;border:0;border-radius:12px;background:var(--chip);color:var(--txt);font-size:24px;font-weight:700;line-height:1}
+  .stepper button:disabled{opacity:.35;cursor:default}
+  .stepper output{min-width:26px;text-align:center;font-size:18px;font-weight:800}
+
+  .info{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+  .ico{width:40px;height:40px;border-radius:12px;background:var(--chip);display:flex;align-items:center;justify-content:center;flex:none}
+  .info b{display:block;font-size:15px}
+  .info span{font-size:13px;font-weight:500;color:#A9BDB5}
+
+  footer{position:sticky;bottom:0;padding:14px 20px calc(20px + env(safe-area-inset-bottom));background:var(--bg);box-shadow:0 -1px 0 #1F3F36;display:flex;flex-direction:column;gap:10px}
+  label{font-size:14px;font-weight:700;color:var(--txt-2)}
+  input[type=text]{width:100%;height:54px;padding:0 16px;border-radius:14px;border:0;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--txt);font-size:17px;font-weight:600;outline:none}
+  input[type=text]::placeholder{color:var(--txt-4)}
+  input[type=text]:focus-visible{box-shadow:inset 0 0 0 2px var(--accent)}
+  .go{height:58px;border:0;border-radius:16px;background:var(--accent);color:#0F2A24;font-size:17px;font-weight:800}
+  .go:disabled{background:#17382F;box-shadow:inset 0 0 0 1px var(--line);color:#A9BDB5;font-weight:600;cursor:default}
+  .go.busy{cursor:wait}
+  .msg{display:none;padding:12px 14px;border-radius:12px;background:#3A1F1B;box-shadow:inset 0 0 0 1px #7A3B33;color:#FFD9D3;font-size:15px;font-weight:600;line-height:1.4}
+  .msg.show{display:block}
+  button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+
+  .done{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px 20px;text-align:center}
+  .done.show{display:flex}
+  .check{width:84px;height:84px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center}
+  .done h2{margin:0;font-size:30px;line-height:1.1;font-weight:800;letter-spacing:-.02em;overflow-wrap:anywhere}
+  .done p{margin:8px 0 0;font-size:16px;line-height:1.5;font-weight:500;color:var(--txt-3)}
+  .sum{width:100%;padding:18px 20px;border-radius:18px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:12px;text-align:left}
+  .sum small{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#A9BDB5}
+  .sum .r{display:flex;justify-content:space-between;gap:12px;font-size:16px;font-weight:700}
+  .sum .r span:last-child{flex:none;font-weight:600;color:var(--txt-2)}
+  .sum hr{width:100%;border:0;height:1px;background:var(--line);margin:0}
+  .sum .t{font-size:22px;font-weight:800;color:var(--accent)}
+  .again{height:52px;padding:0 28px;border-radius:16px;border:0;background:#17382F;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--txt);font-size:16px;font-weight:700}
+  .hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F2A24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 11h2a2 2 0 0 1 0 4h-2"/><path d="M8 3v2M12 3v2"/></svg>
+    </div>
+    <div><span class="eyebrow" id="lojaNome">Sua Loja</span><span class="brand">Clube Fiel</span></div>
+  </header>
+
+  <div id="telaPedido" style="display:contents">
+    <main>
+      <div>
+        <span class="tag">Cliente fiel</span>
+        <h1>Seu café de todo dia, com desconto.</h1>
+        <p class="lead">Escolha seus combos, toque em Finalizar e pague no balcão.</p>
+      </div>
+      <ul class="list" id="lista"></ul>
+      <div class="info">
+        <div class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E7B75A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg></div>
+        <div><b>Pague no balcão</b><span>Pix, maquininha ou dinheiro. Nada é cobrado aqui.</span></div>
+      </div>
+    </main>
+    <footer>
+      <label for="nome">Seu nome</label>
+      <input id="nome" type="text" maxlength="40" autocomplete="given-name" placeholder="Como o balcão deve te chamar?">
+      <div class="msg" id="msg" role="alert"></div>
+      <button class="go" id="go" type="button" disabled>Escolha seus combos para finalizar</button>
+    </footer>
+  </div>
+
+  <section class="done" id="telaOk" aria-live="polite">
+    <div class="check" aria-hidden="true"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#0F2A24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <div><h2 id="okTitulo">Pedido enviado!</h2><p>A loja já recebeu o seu pedido. É só pagar no balcão.</p></div>
+    <div class="sum"><small>Seu pedido</small><div id="okLinhas" style="display:flex;flex-direction:column;gap:12px"></div><hr><span class="t" id="okTotal"></span></div>
+    <button class="again" id="outro" type="button">Fazer outro pedido</button>
+  </section>
+</div>
+
+<script>
+/* ===== CONFIGURAÇÃO (mude só aqui) ===== */
+const N8N  = 'http://localhost:5678';   // endereço do n8n
+const LOJA = 'loja-teste';              // identificador da loja
+const LOJA_NOME = 'Loja Teste';         // nome que aparece no topo
+// Preços de EXEMPLO. Os combos e preços reais entram depois das visitas às lojas.
+const COMBOS = [
+  { id: 1, nome: 'Café + Pão de queijo', de: 1600, por: 1360 },
+  { id: 2, nome: 'Chá + Biscoito',       de: 1400, por: 1190 },
+  { id: 3, nome: 'Sorvete + Água',       de: 1800, por: 1530 },
+  { id: 4, nome: 'Trufa + Água',         de: 1500, por: 1275 }
+];
+const MAX_POR_COMBO = 9;
+/* ======================================= */
+
+const $ = (id) => document.getElementById(id);
+const brl = (c) => 'R$ ' + (c / 100).toFixed(2).replace('.', ',');
+const qtd = {};            // { idDoCombo: quantidade }
+let enviando = false;
+
+$('lojaNome').textContent = LOJA_NOME;
+
+const CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F2A24" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+COMBOS.forEach((c) => {
+  const li = document.createElement('li');
+  li.className = 'combo'; li.id = 'c' + c.id;
+  li.innerHTML =
+    '<button type="button" class="pick" aria-pressed="false" aria-label="Combo ' + c.id + ', ' + c.nome + ', ' + brl(c.por) + '">' +
+      '<span class="box">' + CHECK + '</span>' +
+      '<span><span class="nm">' + c.id + '. ' + c.nome + '</span><span class="pr">' + brl(c.por) + '<s>' + brl(c.de) + '</s></span></span>' +
+    '</button>' +
+    '<div class="stepper">' +
+      '<button type="button" class="menos" aria-label="Diminuir quantidade do combo ' + c.id + '">−</button>' +
+      '<output aria-live="polite">0</output>' +
+      '<button type="button" class="mais" aria-label="Aumentar quantidade do combo ' + c.id + '">+</button>' +
+    '</div>';
+  $('lista').appendChild(li);
+  li.querySelector('.pick').addEventListener('click', () => mudar(c.id, qtd[c.id] ? -MAX_POR_COMBO : 1));
+  li.querySelector('.menos').addEventListener('click', () => mudar(c.id, -1));
+  li.querySelector('.mais').addEventListener('click', () => mudar(c.id, 1));
+});
+
+function mudar(id, delta) {
+  const novo = Math.max(0, Math.min(MAX_POR_COMBO, (qtd[id] || 0) + delta));
+  if (novo === 0) delete qtd[id]; else qtd[id] = novo;
+  desenhar();
+}
+
+function totalCents() { return COMBOS.reduce((s, c) => s + c.por * (qtd[c.id] || 0), 0); }
+function totalItens() { return COMBOS.reduce((s, c) => s + (qtd[c.id] || 0), 0); }
+
+function desenhar() {
+  COMBOS.forEach((c) => {
+    const el = $('c' + c.id), q = qtd[c.id] || 0;
+    el.classList.toggle('on', q > 0);
+    el.querySelector('.pick').setAttribute('aria-pressed', String(q > 0));
+    el.querySelector('output').textContent = q;
+    el.querySelector('.mais').disabled = q >= MAX_POR_COMBO;
+  });
+  const go = $('go');
+  if (enviando) return;
+  if (totalItens() > 0) { go.disabled = false; go.textContent = 'Finalizar · ' + brl(totalCents()); }
+  else { go.disabled = true; go.textContent = 'Escolha seus combos para finalizar'; }
+}
+
+function mostrarErro(t) { const m = $('msg'); m.textContent = t; m.classList.add('show'); }
+function limparErro() { $('msg').classList.remove('show'); }
+
+$('nome').addEventListener('input', limparErro);
+
+$('go').addEventListener('click', async () => {
+  if (enviando || totalItens() === 0) return;
+  const nome = $('nome').value.trim();
+  if (!nome) { mostrarErro('Digite seu nome para o balcão saber quem você é.'); $('nome').focus(); return; }
+  limparErro();
+
+  const escolhidos = COMBOS.filter((c) => qtd[c.id]);
+  const itens = escolhidos.map((c) => qtd[c.id] + 'x ' + c.nome).join('; ');
+  const total = totalCents();
+
+  enviando = true;
+  const go = $('go'); go.disabled = true; go.classList.add('busy'); go.textContent = 'Enviando…';
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 10000);
+  try {
+    const r = await fetch(N8N + '/webhook/pedido', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, loja: LOJA, itens, total }),
+      signal: ctl.signal
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    // Sucesso: mostra a confirmação
+    $('okTitulo').textContent = 'Pedido enviado, ' + nome + '!';
+    $('okLinhas').innerHTML = '';
+    escolhidos.forEach((c) => {
+      const d = document.createElement('div'); d.className = 'r';
+      const a = document.createElement('span'); a.textContent = qtd[c.id] + '× ' + c.id + '. ' + c.nome;
+      const b = document.createElement('span'); b.textContent = brl(c.por * qtd[c.id]);
+      d.append(a, b); $('okLinhas').appendChild(d);
+    });
+    $('okTotal').textContent = brl(total) + ' no balcão';
+    $('telaPedido').classList.add('hide');
+    $('telaOk').classList.add('show');
+    window.scrollTo(0, 0);
+  } catch (e) {
+    mostrarErro('Não consegui enviar o pedido. Confira sua internet e toque em Finalizar de novo. Se continuar, fale com o balcão.');
+  } finally {
+    clearTimeout(timer);
+    enviando = false; go.classList.remove('busy'); desenhar();
+  }
+});
+
+$('outro').addEventListener('click', () => {
+  Object.keys(qtd).forEach((k) => delete qtd[k]);
+  $('telaOk').classList.remove('show');
+  $('telaPedido').classList.remove('hide');
+  desenhar(); window.scrollTo(0, 0);
+});
+
+desenhar();
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+{
+  "name": "Fidelidade - receber pedido",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pedido",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        -32
+      ],
+      "id": "bd6f1e65-7ce4-43e9-b120-a770f02a7900",
+      "name": "Webhook",
+      "webhookId": "fe4a47c1-6b6d-4f1c-ba81-df209e178ede"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "p9zrYzSeeORgV5gS",
+          "mode": "list",
+          "cachedResultName": "pedidos",
+          "cachedResultUrl": "/projects/sIHlSnQjfC9tiiYP/datatables/p9zrYzSeeORgV5gS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json.body.nome }}",
+            "combo": "={{ $json.body.combo }}",
+            "qtd": "={{ $json.body.qtd }}",
+            "loja": "=loja-teste",
+            "status": "=pendente",
+            "itens": "={{ $json.body.itens }}",
+            "total": "={{ $json.body.total }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "loja",
+              "displayName": "loja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "combo",
+              "displayName": "combo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "qtd",
+              "displayName": "qtd",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "itens",
+              "displayName": "itens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        80
+      ],
+      "id": "1e219cf0-29cb-4143-98c4-51cea5938775",
+      "name": "Insert row"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "52014440-8e3f-478d-83eb-7445a8718fb6",
+  "meta": {
+    "instanceId": "34d28adda5752d1d5da59baa3c39b18ddb335f6427a8f9e3d98166f3f83d8908"
+  },
+  "nodeGroups": [],
+  "id": "KhoCY1nrSboiBxrE",
+  "tags": []
+}

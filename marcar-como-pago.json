@@ -1,0 +1,142 @@
+{
+  "name": "Fidelidade - marcar como pago",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "recebi",
+        "responseMode": "lastNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "67864d6f-2d1c-44a2-b435-a187c876879f",
+      "name": "Webhook",
+      "webhookId": "7df6f9de-124e-49ba-b94b-a08e7b83d8d4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "p9zrYzSeeORgV5gS",
+          "mode": "list",
+          "cachedResultName": "pedidos",
+          "cachedResultUrl": "/projects/sIHlSnQjfC9tiiYP/datatables/p9zrYzSeeORgV5gS"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $json.body.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "pago"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "loja",
+              "displayName": "loja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "combo",
+              "displayName": "combo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "qtd",
+              "displayName": "qtd",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d18f673f-80d7-4df3-82bf-819e91f007fd",
+      "name": "Update row(s)"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8f22b8c5-61a1-4aa5-ae01-7c9ac47e6b0b",
+  "meta": {
+    "instanceId": "34d28adda5752d1d5da59baa3c39b18ddb335f6427a8f9e3d98166f3f83d8908"
+  },
+  "nodeGroups": [],
+  "id": "K4B031purnRnWGWM",
+  "tags": []
+}

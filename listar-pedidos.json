@@ -1,0 +1,80 @@
+{
+  "name": "Fidelidade - listar pedidos",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "pedidos",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6e9f8f7a-c20b-4983-93fe-cfb9433aae86",
+      "name": "Webhook",
+      "webhookId": "21457461-2e8e-442d-b8a8-a42ac92bff2e"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "p9zrYzSeeORgV5gS",
+          "mode": "list",
+          "cachedResultName": "pedidos",
+          "cachedResultUrl": "/projects/sIHlSnQjfC9tiiYP/datatables/p9zrYzSeeORgV5gS"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "keyValue": "pendente"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "41f08bbc-26ba-43b6-bacf-6b65de62f7f1",
+      "name": "Get row(s)"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "6d370440-adf9-4fb0-a0e7-3bf0888206b4",
+  "meta": {
+    "instanceId": "34d28adda5752d1d5da59baa3c39b18ddb335f6427a8f9e3d98166f3f83d8908"
+  },
+  "nodeGroups": [],
+  "id": "rPSScTGMzi8NDRc1",
+  "tags": []
+}

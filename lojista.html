@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clube Fiel — Balcão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
+<style>
+  :root{
+    --bg:#0B1F1A; --card:#133229; --card-done:#0F2A24; --line:#2D4D44; --line-soft:#1F3F36;
+    --txt:#F6F1E7; --txt-2:#D5E0DB; --txt-3:#B7C8C1; --txt-4:#8FA59D;
+    --accent:#E7B75A; --ok:#6FE0A8; --bad:#FF8A7A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);font-family:'Manrope',system-ui,Segoe UI,sans-serif;font-size:18px}
+  button{font-family:inherit;cursor:pointer}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:22px}
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:16px}
+  .logo{width:52px;height:52px;border-radius:15px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
+  .eyebrow{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3)}
+  h1{margin:2px 0 0;font-size:32px;font-weight:800;letter-spacing:-.02em}
+  .head-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .pill{display:flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);font-size:16px;font-weight:700;color:var(--txt-2)}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--ok)}
+  .pill.off .dot{background:var(--bad)}
+  .btn-ghost{height:46px;padding:0 18px;border-radius:999px;border:0;background:#17382F;box-shadow:inset 0 0 0 1px #3A5C52;color:var(--txt-2);font-size:16px;font-weight:700}
+  .btn-ghost[aria-pressed="true"]{background:var(--accent);color:#0B1F1A;box-shadow:none}
+
+  .banner{display:none;padding:16px 20px;border-radius:16px;background:#3A1F1B;box-shadow:inset 0 0 0 1px #7A3B33;color:#FFD9D3;font-size:17px;font-weight:600;line-height:1.45}
+  .banner.show{display:block}
+
+  .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
+  @media (max-width:860px){.layout{grid-template-columns:1fr}}
+
+  .list{display:flex;flex-direction:column;gap:14px;min-width:0}
+  .order{display:flex;align-items:center;gap:20px;padding:20px 22px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);animation:in .25s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .ini{width:56px;height:56px;border-radius:16px;background:#1C4237;display:flex;align-items:center;justify-content:center;flex:none;font-size:24px;font-weight:800;color:var(--accent)}
+  .info{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+  .name-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .name{font-size:24px;font-weight:800;overflow-wrap:anywhere}
+  .tag{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--accent);color:#0B1F1A}
+  .item{font-size:18px;font-weight:600;color:var(--txt-3)}
+  .time{font-size:15px;font-weight:500;color:var(--txt-4)}
+  .price{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none}
+  .price small{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3)}
+  .price strong{font-size:30px;font-weight:800;color:var(--accent);white-space:nowrap}
+  .recebi{width:150px;height:58px;border-radius:16px;border:0;background:var(--accent);color:#0B1F1A;font-size:19px;font-weight:800;flex:none}
+  .recebi:disabled{opacity:.55;cursor:wait}
+  .recebi:focus-visible,.btn-ghost:focus-visible,.btn-side:focus-visible{outline:3px solid #fff;outline-offset:3px}
+  @media (max-width:620px){.order{flex-wrap:wrap}.recebi{width:100%}}
+
+  .empty{padding:48px 24px;text-align:center;border-radius:22px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--txt-3);font-size:20px;font-weight:600;line-height:1.5}
+  .empty b{display:block;font-size:26px;color:var(--txt);margin-bottom:6px}
+
+  aside{display:flex;flex-direction:column;gap:20px;padding:26px;border-radius:24px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);position:sticky;top:20px}
+  .lbl{font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-3)}
+  .big{font-size:50px;line-height:1;font-weight:800;letter-spacing:-.02em;color:var(--accent)}
+  .sub{font-size:18px;font-weight:600;color:var(--txt-2)}
+  hr{border:0;height:1px;background:var(--line);width:100%;margin:0}
+  .row{display:flex;align-items:center;justify-content:space-between;font-size:17px;font-weight:600;color:var(--txt-3)}
+  .row b{font-size:22px;color:var(--txt)}
+  .note{margin:0;font-size:15px;line-height:1.5;color:var(--txt-4)}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:14px 22px;border-radius:14px;background:#1C4237;box-shadow:inset 0 0 0 1px #3A5C52,0 10px 30px rgba(0,0,0,.4);font-size:17px;font-weight:700;transition:.25s;max-width:92vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%)}
+  .toast.err{background:#3A1F1B;box-shadow:inset 0 0 0 1px #7A3B33,0 10px 30px rgba(0,0,0,.4);color:#FFD9D3}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0B1F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 11h2a2 2 0 0 1 0 4h-2"/><path d="M8 3v2M12 3v2"/></svg>
+      </div>
+      <div>
+        <div class="eyebrow" id="lojaNome">Sua Loja · Balcão</div>
+        <h1>Pedidos do clube</h1>
+      </div>
+    </div>
+    <div class="head-right">
+      <button type="button" class="btn-ghost" id="btnSom" aria-pressed="false">🔔 Ativar aviso sonoro</button>
+      <div class="pill" id="status" role="status"><span class="dot"></span><span id="statusTxt">Conectando…</span></div>
+    </div>
+  </header>
+
+  <div class="banner" id="banner" role="alert"></div>
+
+  <div class="layout">
+    <section class="list" id="lista" aria-live="polite"></section>
+
+    <aside>
+      <div class="lbl">A cobrar agora</div>
+      <div class="big" id="total">R$ 0,00</div>
+      <div class="sub" id="qtdPend">0 pedidos esperando no balcão</div>
+      <hr>
+      <div class="row"><span>Cobrados nesta sessão</span><b id="qtdPagos">0</b></div>
+      <p class="note">Cada pedido aparece aqui assim que o cliente toca em Finalizar. O pagamento é feito no balcão (Pix, maquininha ou dinheiro). Toque em <b>Recebi</b> só depois de receber.</p>
+    </aside>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ CONFIGURAÇÃO (só mexa aqui) ============ */
+const N8N = 'http://localhost:5678';   // endereço do n8n
+const LOJA = 'loja-teste';             // só aparecem pedidos desta loja
+const INTERVALO_MS = 5000;             // atualiza a cada 5 segundos
+/* Preços de EXEMPLO. Os combos reais entram depois das visitas às lojas. */
+const COMBOS = {
+  1: { nome: 'Café + Pão de queijo', cents: 1360 },
+  2: { nome: 'Chá + Biscoito',       cents: 1190 },
+  3: { nome: 'Sorvete + Água',       cents: 1530 },
+  4: { nome: 'Trufa + Água',         cents: 1275 }
+};
+/* ====================================================== */
+
+const $ = (id) => document.getElementById(id);
+const reais = (c) => 'R$ ' + (c / 100).toFixed(2).replace('.', ',');
+let pedidos = [];
+let conhecidos = null;          // ids já vistos (null = ainda não carregou a 1ª vez)
+let novosAte = {};              // id -> instante até quando mostra a etiqueta "Novo"
+let pagos = 0;
+let offline = false;
+let somLigado = false;
+let ctx = null;
+
+$('lojaNome').textContent = 'Loja: ' + LOJA + ' · Balcão';
+
+function toast(msg, erro) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (erro ? ' err' : '');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { t.className = 'toast' + (erro ? ' err' : ''); }, 3200);
+}
+
+function setStatus(ok, txt) {
+  $('status').className = 'pill' + (ok ? '' : ' off');
+  $('statusTxt').textContent = txt;
+}
+
+function mostrarBanner(msg) {
+  const b = $('banner');
+  if (msg) { b.textContent = msg; b.classList.add('show'); } else { b.classList.remove('show'); }
+}
+
+function tempo(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return '';
+  const min = Math.floor((Date.now() - d.getTime()) / 60000);
+  if (min < 1) return 'agora mesmo';
+  if (min === 1) return 'há 1 minuto';
+  if (min < 60) return 'há ' + min + ' minutos';
+  const h = Math.floor(min / 60);
+  return h === 1 ? 'há 1 hora' : 'há ' + h + ' horas';
+}
+
+function precoPedido(o) {
+  // Pedido novo: o total (em centavos) já vem pronto da tela do cliente.
+  if (o.total !== null && o.total !== undefined && o.total !== '' && !isNaN(Number(o.total))) return Number(o.total);
+  // Pedido antigo (1 combo só): calcula pelo combo e pela quantidade.
+  const c = COMBOS[o.combo];
+  return c ? c.cents * Number(o.qtd || 1) : null;
+}
+
+function bip() {
+  if (!somLigado || !ctx) return;
+  const t0 = ctx.currentTime;
+  [[880, 0], [1175, 0.16]].forEach(([f, at]) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t0 + at);
+    g.gain.exponentialRampToValueAtTime(0.25, t0 + at + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + at + 0.30);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(t0 + at); o.stop(t0 + at + 0.32);
+  });
+}
+
+$('btnSom').addEventListener('click', () => {
+  somLigado = !somLigado;
+  if (somLigado) {
+    try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); ctx.resume(); } catch (e) {}
+    bip();
+  }
+  $('btnSom').setAttribute('aria-pressed', String(somLigado));
+  $('btnSom').textContent = somLigado ? '🔔 Aviso sonoro ligado' : '🔔 Ativar aviso sonoro';
+});
+
+function desenhar() {
+  const lista = $('lista');
+  lista.innerHTML = '';
+  if (!pedidos.length) {
+    lista.innerHTML = offline
+      ? '<div class="empty"><b>Sem conexão com o n8n</b>Não dá para saber se há pedidos novos. Confira a janela preta do n8n.</div>'
+      : '<div class="empty"><b>Nenhum pedido esperando</b>Quando um cliente tocar em Finalizar, o pedido aparece aqui sozinho.</div>';
+  }
+  let total = 0;
+  pedidos.forEach((o) => {
+    const c = COMBOS[o.combo];
+    const preco = precoPedido(o);
+    if (preco) total += preco;
+    const novo = novosAte[o.id] && novosAte[o.id] > Date.now();
+
+    const el = document.createElement('div');
+    el.className = 'order';
+
+    const ini = document.createElement('div');
+    ini.className = 'ini';
+    ini.textContent = (o.nome || '?').trim().charAt(0).toUpperCase();
+
+    const info = document.createElement('div');
+    info.className = 'info';
+    const row = document.createElement('div');
+    row.className = 'name-row';
+    const nome = document.createElement('span');
+    nome.className = 'name';
+    nome.textContent = o.nome || 'Sem nome';
+    row.appendChild(nome);
+    if (novo) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = 'Novo'; row.appendChild(t); }
+    const item = document.createElement('div');
+    item.className = 'item';
+    if (o.itens) {
+      // Pedido novo: um item por linha (ex.: "2x Café + Pão de queijo")
+      item.style.whiteSpace = 'pre-line';
+      item.textContent = String(o.itens).split(';').map((s) => s.trim()).filter(Boolean).join('\n');
+    } else {
+      item.textContent = (o.qtd || 1) + '× Combo ' + o.combo + (c ? ' · ' + c.nome : '');
+    }
+    const tm = document.createElement('div');
+    tm.className = 'time';
+    tm.textContent = tempo(o.createdAt);
+    info.append(row, item, tm);
+
+    const pr = document.createElement('div');
+    pr.className = 'price';
+    pr.innerHTML = '<small>Cobrar</small><strong></strong>';
+    pr.querySelector('strong').textContent = preco ? reais(preco) : '—';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'recebi';
+    btn.textContent = 'Recebi';
+    btn.addEventListener('click', () => marcarPago(o, btn));
+
+    el.append(ini, info, pr, btn);
+    lista.appendChild(el);
+  });
+
+  $('total').textContent = reais(total);
+  const n = pedidos.length;
+  $('qtdPend').textContent = n === 1 ? '1 pedido esperando no balcão' : n + ' pedidos esperando no balcão';
+  $('qtdPagos').textContent = pagos;
+}
+
+async function buscar() {
+  const ctl = new AbortController();
+  const to = setTimeout(() => ctl.abort(), 4000);
+  try {
+    const r = await fetch(N8N + '/webhook/pedidos', { signal: ctl.signal, cache: 'no-store' });
+    const txt = await r.text();
+    let dados = null;
+    try { dados = JSON.parse(txt); } catch (e) { dados = null; }
+
+    let lista;
+    if (Array.isArray(dados)) lista = dados;
+    else if (dados && typeof dados === 'object' && /no item to return/i.test(String(dados.message || ''))) lista = [];
+    else if (r.ok && (txt.trim() === '' || dados === null || (dados && !dados.code))) lista = [];
+    else throw new Error('resposta inesperada: HTTP ' + r.status);
+
+    lista = lista.filter((o) => o && o.status === 'pendente' && o.loja === LOJA)
+                 .sort((a, b) => Number(a.id) - Number(b.id));
+
+    const ids = new Set(lista.map((o) => o.id));
+    if (conhecidos === null) {
+      conhecidos = ids;
+    } else {
+      let chegouNovo = false;
+      lista.forEach((o) => {
+        if (!conhecidos.has(o.id)) { chegouNovo = true; novosAte[o.id] = Date.now() + 60000; }
+      });
+      conhecidos = new Set([...conhecidos, ...ids]);
+      if (chegouNovo) bip();
+    }
+    pedidos = lista;
+    offline = false;
+    mostrarBanner('');
+    setStatus(true, 'Ao vivo');
+    desenhar();
+  } catch (e) {
+    offline = true;
+    setStatus(false, 'Sem conexão');
+    desenhar();
+    mostrarBanner('Não consegui falar com o n8n. Confira se a janela preta do n8n está aberta e se o fluxo "listar pedidos" está Published. Vou tentar de novo sozinho.');
+  } finally {
+    clearTimeout(to);
+  }
+}
+
+async function marcarPago(o, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+  try {
+    const r = await fetch(N8N + '/webhook/recebi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: o.id })
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    pedidos = pedidos.filter((p) => p.id !== o.id);
+    pagos += 1;
+    desenhar();
+    toast('Pedido de ' + (o.nome || 'cliente') + ' marcado como pago ✔');
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = 'Recebi';
+    toast('Não consegui marcar como pago. Tente de novo.', true);
+  }
+}
+
+desenhar();
+buscar();
+setInterval(buscar, INTERVALO_MS);
+setInterval(desenhar, 30000);   // atualiza o "há X minutos"
+</script>
+</body>
+</html>

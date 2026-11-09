@@ -20,6 +20,20 @@ flowchart LR
     F -->|Não| E
 ```
 
+## Telas
+
+**Cliente:** escolhe os combos, informa o nome e toca em Finalizar. Depois vê a confirmação.
+
+<p>
+  <img src="docs/tela-cliente.png" alt="Tela do cliente com dois combos escolhidos e o botão Finalizar" width="270">
+  &nbsp;&nbsp;
+  <img src="docs/tela-confirmacao.png" alt="Tela de confirmação: pedido enviado, pague no balcão" width="270">
+</p>
+
+**Lojista (balcão):** o pedido aparece sozinho em até 5 segundos, com aviso sonoro. Depois de receber o pagamento, o lojista toca em **Recebi**.
+
+<img src="docs/tela-lojista.png" alt="Tela do lojista com um pedido novo e o botão Recebi" width="640">
+
 ## O que tem aqui
 
 | Pasta | Conteúdo |
@@ -29,6 +43,7 @@ flowchart LR
 | `n8n/receber-pedido.json` | Fluxo que recebe o pedido e grava na tabela |
 | `n8n/listar-pedidos.json` | Fluxo que devolve os pedidos pendentes |
 | `n8n/marcar-como-pago.json` | Fluxo que troca o status do pedido para pago |
+| `docs/` | Prints das telas usados neste README |
 
 ## Tecnologias
 
